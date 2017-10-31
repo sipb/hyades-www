@@ -36,7 +36,7 @@
     .wrapper p, .wrapper ul { margin-top: 0; margin-bottom: 1em; }
     .wrapper ul:last-child { margin-bottom: 0; }
     #stars {
-        z-index:0;
+        position: fixed;
         display: block;
         margin: 0 auto;
     }
@@ -51,6 +51,7 @@
     </style>
     <body>
         <div id="container" style="width: 100%; height: 100%">
+            <canvas id="stars" width="1920" height="600"></canvas>
             <h1><img id="logo" src="hyades-white.svg" />Hyades</h1>
             <div class="wrapper">
                 <p>Hyades is basically Amazon Web Services for the MIT community. The goal is to provide flexible computational resources on demand, which will enable MIT community members to host websites (a la <a href="https://scripts.mit.edu/">scripts</a>), run virtual machines (a la <a href="https://xvm.mit.edu/">XVM</a>), and more.</p>
@@ -63,7 +64,6 @@
                     <li><a href="https://github.com/sipb/spike"><strong>Spike</strong></a>, the packet-level software network load balancer, based on Maglev</a></li>
                 </ul>
             </div>
-            <canvas id="stars" width="1920" height="600"></canvas>
         </div>
 
         <script
@@ -72,7 +72,7 @@
               crossorigin="anonymous"></script>
         <script type="text/javascript">
         var WIDTH=document.documentElement.clientWidth;
-        var HEIGHT=600;
+        var HEIGHT=document.documentElement.clientHeight;
         var totalStars=400;
         var scrollVelocity = 20;
         var canvas;
