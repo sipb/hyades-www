@@ -21,17 +21,24 @@
         left: 0;
         right: 0;
         text-align: center;
-        margin-top: 2em;
+        margin: 0.4em;
         color: white;
         font-weight: 100;
-        font-size: 3em;
+        font-size: 300%;
     }
     .wrapper {
         max-width: 40em;
         margin: 0 auto;
         padding: 1em 1em;
-        border-radius: 1em;
         background-color: #f8f8f8;
+    }
+    @media screen and (min-width:40em) {
+        h1 {
+            font-size: 400%;
+        }
+        .wrapper {
+            border-radius: 1em;
+        }
     }
     .wrapper p, .wrapper ul { margin-top: 0; margin-bottom: 1em; }
     .wrapper ul:last-child { margin-bottom: 0; }
