@@ -7,19 +7,9 @@
     html, body {
         margin:0;
         padding:0;
-        height:100%;
-
         font-family: "Helvetica Neue", Helvetica, sans-serif;
-        background-size:cover;
-        background-color:black;
-    }
-    #container {
-        overflow:hidden;
-        position:relative;
     }
     h1 {
-        left: 0;
-        right: 0;
         text-align: center;
         margin: 0.4em;
         color: white;
@@ -43,9 +33,14 @@
     .wrapper p, .wrapper ul { margin-top: 0; margin-bottom: 1em; }
     .wrapper ul:last-child { margin-bottom: 0; }
     #stars {
+        background-color: black;
+        z-index: -1;
         position: fixed;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
         display: block;
-        margin: 0 auto;
     }
     #logo {
         position: relative;
@@ -57,20 +52,18 @@
     }
     </style>
     <body>
-        <div id="container" style="width: 100%; height: 100%">
-            <canvas id="stars" width="1920" height="600"></canvas>
-            <h1><img id="logo" src="hyades-white.svg" />Hyades</h1>
-            <div class="wrapper">
-                <p>Hyades is basically Amazon Web Services for the MIT community. The goal is to provide flexible computational resources on demand, which will enable MIT community members to host websites (a la <a href="https://scripts.mit.edu/">scripts</a>), run virtual machines (a la <a href="https://xvm.mit.edu/">XVM</a>), and more.</p>
-                <p>Hyades is a
-                <a href="https://sipb.mit.edu">SIPB project</a>.
-                Email <a href="hyades@mit.edu">hyades@mit.edu</a> to get involved. You can also stop by SIPB meetings (every Monday 7:30 PM in the SIPB office, W20-557), where you can be added to our mailing lists and be notified about our regularly held Hyades hackathons.</p>
-                <p>Hyades uses technology like Kubernetes and etcd. Hyades source code is on GitHub:</p>
-                <ul>
-                    <li><a href="https://github.com/sipb/homeworld"><strong>Homeworld</strong></a>, the cluster management system</li>
-                    <li><a href="https://github.com/sipb/spike"><strong>Spike</strong></a>, the packet-level software network load balancer, based on Maglev</a></li>
-                </ul>
-            </div>
+        <canvas id="stars" width="1920" height="600"></canvas>
+        <h1><img id="logo" src="hyades-white.svg" />Hyades</h1>
+        <div class="wrapper">
+            <p>Hyades is basically Amazon Web Services for the MIT community. The goal is to provide flexible computational resources on demand, which will enable MIT community members to host websites (a la <a href="https://scripts.mit.edu/">scripts</a>), run virtual machines (a la <a href="https://xvm.mit.edu/">XVM</a>), and more.</p>
+            <p>Hyades is a
+            <a href="https://sipb.mit.edu">SIPB project</a>.
+            Email <a href="hyades@mit.edu">hyades@mit.edu</a> to get involved. You can also stop by SIPB meetings (every Monday 7:30 PM in the SIPB office, W20-557), where you can be added to our mailing lists and be notified about our regularly held Hyades hackathons.</p>
+            <p>Hyades uses technology like Kubernetes and etcd. Hyades source code is on GitHub:</p>
+            <ul>
+                <li><a href="https://github.com/sipb/homeworld"><strong>Homeworld</strong></a>, the cluster management system</li>
+                <li><a href="https://github.com/sipb/spike"><strong>Spike</strong></a>, the packet-level software network load balancer, based on Maglev</a></li>
+            </ul>
         </div>
 
         <script
@@ -78,15 +71,14 @@
               integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
               crossorigin="anonymous"></script>
         <script type="text/javascript">
-        var WIDTH=document.documentElement.clientWidth;
-        var HEIGHT=document.documentElement.clientHeight;
-        var totalStars=400;
+        var width  = window.innerWidth;
+        var height = window.innerHeight;
+        var totalStars = 400;
         var scrollVelocity = 20;
         var canvas;
         var context;
         var g;
         var stars = new Array();
-        var screenOffset = (document.documentElement.clientWidth - 427)/2;
         var timer = 0;
 
         //setup
@@ -98,11 +90,20 @@
                 stars[i].r = Math.random()+0.5;
                 stars[i].init();
             }
+            window.addEventListener('resize', resizeCanvas, false);
+            resizeCanvas();
             setInterval(draw,60);
         });
 
+        function resizeCanvas() {
+            width  = window.innerWidth;
+            height = window.innerHeight;
+            canvas.width  = width;
+            canvas.height = height;
+        }
+
         function draw() {
-            context.clearRect(0,0,WIDTH,HEIGHT);
+            context.clearRect(0,0,width,height);
             for(var i = 0; i < stars.length; i++) {
                 stars[i].move();
                 stars[i].draw();
@@ -110,57 +111,26 @@
         }
 
         function Star() {
-            this.s = {x_speed:0.1, y_speed:0.1, radius_max:10, animSpeed:0.1};
             this.init = function() {
-                this.x = this.origX = WIDTH*Math.random();
-                this.y = this.origY = HEIGHT*Math.random();
-                this.dx = (Math.random()*this.s.x_speed) * (Math.random() < .5 ? -1 : 1);
-                this.dy = (Math.random()*this.s.y_speed) * (Math.random() < .5 ? -1 : 1);
-                this.reseting = false;
+                this.x = Math.random();
+                this.y = Math.random();
+                this.dx = (Math.random() - 0.5)/10000;
+                this.dy = (Math.random() - 0.5)/10000;
             }
-
-            this.fade = function() {
-                var pi = 3.14;
-                var frequency = 0.42;
-                timer++;
-                return 0.05*(1+Math.sin(2 * pi * frequency * timer))
-            }
-
             this.draw = function() {
-                var new_opacity = this.fade();
-
-                //Circles
-                //context.beginPath();
-                //context.arc(this.x,this.y,this.r,0,Math.PI*2,true);
-
-                //Squares
+                var x = this.x * width;
+                var y = this.y * height;
                 context.beginPath();
-                context.rect(this.x,this.y,this.r,this.r)
+                context.rect(x,y,this.r,this.r);
                 context.fillStyle = 'white';
                 context.fill();
                 context.closePath();
-                g = context.createRadialGradient(this.x,this.y,0,this.x,this.y,this.r);
-                g.addColorStop(0.0, 'rgba(255,255,255,1)');
-                g.addColorStop(0.1, 'rgba(255,255,255,1)');
-                g.addColorStop(0.3, 'rgba(255,255,255,'+(new_opacity)+')');
-                g.addColorStop(1.0, 'rgba(45,57,99,0)');
-                context.fillStyle = g;
-                context.fill();
             }
-
             this.move = function() {
-                if(this.reseting) {
-                    if (this.x < this.origX+50 && this.x > this.origX-50) {
-                        this.reseting = false;
-                    }
-                    this.x += (this.origX-this.x)/this.s.animSpeed + ((this.origX-this.x)/this.s.animSpeed < this.dx ? this.dx : 0);
-                    this.y += (this.origY-this.y)/this.s.animSpeed + ((this.origY-this.y)/this.s.animSpeed < this.dy ? this.dy : 0);
-                } else {
-                    this.x += 1*this.dx;
-                    this.y += 1*this.dy;
-                    if(this.x > WIDTH || this.x < 0) this.dx *= -1;
-                    if(this.y > HEIGHT || this.y < 0) this.dy *= -1;
-                }
+                this.x += this.dx;
+                this.y += this.dy;
+                if (this.x > 1 || this.x < 0) this.dx *= -1;
+                if (this.y > 1 || this.y < 0) this.dy *= -1;
             }
         }
         </script>
