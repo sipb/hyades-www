@@ -84,7 +84,7 @@
             context = canvas.getContext('2d');
             for(var i = 0; i < totalStars; i++) {
                 stars[i] = new Star();
-                stars[i].r = Math.random()+0.5;
+                stars[i].r = 2*Math.random()+0.5;
                 stars[i].init();
             }
             window.addEventListener('resize', draw, false);
