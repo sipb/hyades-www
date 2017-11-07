@@ -1,42 +1,129 @@
-<!DOCTYPE html>
+<!DOCTYPE HTML>
 <html>
-	<head>
-	<meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Hyades</title>
-	<!-- <link href="https://fonts.googleapis.com/css?family=PT+Sans" rel="stylesheet"> -->
-	<!-- <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet"> -->
-	<link href="https://fonts.googleapis.com/css?family=PT+Sans:400,700|Catamaran:500" rel="stylesheet">
-	<!-- <link href='https://fonts.googleapis.com/css?family=Fira+Sans:400,700' rel='stylesheet' type='text/css'> -->
-	<!-- <link href='https://fonts.googleapis.com/css?family=Fira+Mono' rel='stylesheet' type='text/css'> -->
-	<style>
-body { margin: 0; padding: 0; background-color: #f8f8ff;font-family:"PT Sans", sans-serif; font-size: 14pt; }
-.jumbo { background-color: #def; padding: 1.6em 0; }
-.wrapper { max-width: 40em; margin: 0 auto; padding: 0 1em; }
-h1 { position: relative; text-shadow: #bdf 1px 1px 1px; margin: 0; font-size: 300%; font-weight: 500; font-family: "Catamaran", sans-serif; }
-#logo { position: relative; top: 0.2em; margin-right: 0.2em; max-height: 1.2em; max-width: 1.2em; width: auto; }
-@media screen and (min-width:30em) {
-	h1 { font-size: 500%; }
-}
-	</style>
-	</head>
-	<body>
-		<div class="jumbo">
-			<div class="wrapper">
-			<h1><img id="logo" src="hyades.svg" />Hyades</h1>
-			</div>
-		</div>
-		<div class="wrapper">
-			<p>Hyades is basically Amazon Web Services for the MIT community. The goal is to provide flexible computational resources on demand, which will enable MIT community members to host websites (a la <a href="https://scripts.mit.edu/">scripts</a>), run virtual machines (a la <a href="https://xvm.mit.edu/">XVM</a>), and more.</p>
-			<p>Hyades is a
-			<a href="https://sipb.mit.edu">SIPB project</a>.
-			Email <a href="hyades@mit.edu">hyades@mit.edu</a> to get involved. You can also stop by SIPB meetings (every Monday 7:30 PM in the SIPB office, W20-557), where you can be added to our mailing lists and be notified about our regularly held Hyades hackathons.</p>
-			<p>Hyades uses technology like Kubernetes and etcd. Hyades source code is on GitHub:</p>
-			<ul>
-				<li><a href="https://github.com/sipb/homeworld"><strong>Homeworld</strong></a>, the cluster management system</li>
-				<li><a href="https://github.com/sipb/spike"><strong>Spike</strong></a>, the packet-level software network load balancer, based on Maglev</a></li>
-			</ul>
-		</div>
-	</body>
+<head>
+    <meta charset="UTF-8">
+    <title>Hyades</title>
+    <style type="text/css">
+    html, body {
+        margin:0;
+        padding:0;
+        font-family: "Helvetica Neue", Helvetica, sans-serif;
+    }
+    h1 {
+        text-align: center;
+        margin: 0.4em;
+        color: white;
+        font-weight: 100;
+        font-size: 300%;
+    }
+    a{
+        color:#000000;
+        font-weight: bold;
+    }
+    .wrapper {
+        max-width: 40em;
+        margin: 0 auto;
+        padding: 1em 1em;
+        background-color: #f8f8f8;
+        text-align: justify;
+        line-height: 1.3em;
+    }
+    @media screen and (min-width:40em) {
+        h1 {
+            font-size: 400%;
+        }
+        .wrapper {
+            border-radius: 0;
+            opacity: 0.95;
+        }
+    }
+    .wrapper p, .wrapper ul { margin-top: 0; margin-bottom: 1em; list-style: square;}
+    .wrapper ul:last-child { margin-bottom: 0; }
+    #stars {
+        background-color: black;
+        z-index: -1;
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        display: block;
+    }
+    #logo {
+        position: relative;
+        top: 0.25em;
+        margin-right: 0.3em;
+        max-height: 1.2em;
+        max-width: 1.2em;
+        width: auto;
+    }
+    </style>
+    <body>
+        <canvas id="stars" width="1920" height="600"></canvas>
+        <h1><img id="logo" src="hyades-white.svg" />Hyades</h1>
+        <div class="wrapper">
+            <p>Hyades is basically Amazon Web Services for the MIT community. The goal is to provide flexible computational resources on demand, which will enable MIT community members to host websites (&aacute; la <a href="https://scripts.mit.edu/">scripts</a>), run virtual machines (&aacute; la <a href="https://xvm.mit.edu/">XVM</a>), and more.</p>
+            <p>Hyades is a
+            <a href="https://sipb.mit.edu">SIPB project</a>.
+            Email <a href="hyades@mit.edu">hyades@mit.edu</a> to get involved. You can also stop by SIPB meetings (every Monday 7:30 PM in the SIPB office, W20-557), where you can be added to our mailing lists and be notified about our regularly held Hyades hackathons.</p>
+            <p>Hyades uses technology like Kubernetes and etcd. Hyades source code is on GitHub:</p>
+            <ul>
+                <li><a href="https://github.com/sipb/homeworld"><strong>Homeworld</strong></a>, the cluster management system</li>
+                <li><a href="https://github.com/sipb/spike"><strong>Spike</strong></a>, the packet-level software network load balancer, based on Maglev</a></li>
+            </ul>
+        </div>
+
+        <script
+              src="https://code.jquery.com/jquery-3.2.1.min.js"
+              integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+              crossorigin="anonymous"></script>
+        <script type="text/javascript">
+        var width  = window.innerWidth;
+        var height = window.innerHeight;
+        var totalStars = 400;
+        var canvas;
+        var context;
+        var stars = new Array();
+
+        //setup
+        $(document).ready(function(){
+            canvas = document.getElementById('stars');
+            context = canvas.getContext('2d');
+            for(var i = 0; i < totalStars; i++) {
+                stars[i] = new Star();
+                stars[i].r = 2*Math.random()+0.5;
+                stars[i].init();
+            }
+            window.addEventListener('resize', draw, false);
+            draw();
+        });
+
+        function draw() {
+            width  = window.innerWidth;
+            height = window.innerHeight;
+            canvas.width  = width;
+            canvas.height = height;
+            context.clearRect(0,0,width,height);
+            for(var i = 0; i < stars.length; i++) {
+                stars[i].draw();
+            }
+        }
+
+        function Star() {
+            this.init = function() {
+                this.x = Math.random();
+                this.y = Math.random();
+            }
+            this.draw = function() {
+                var x = this.x * width;
+                var y = this.y * height;
+                context.beginPath();
+                context.rect(x,y,this.r,this.r);
+                context.fillStyle = 'white';
+                context.fill();
+                context.closePath();
+            }
+        }
+        </script>
+    </body>
 </html>

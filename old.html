@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Hyades</title>
+	<!-- <link href="https://fonts.googleapis.com/css?family=PT+Sans" rel="stylesheet"> -->
+	<!-- <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet"> -->
+	<link href="https://fonts.googleapis.com/css?family=PT+Sans:400,700|Catamaran:500" rel="stylesheet">
+	<!-- <link href='https://fonts.googleapis.com/css?family=Fira+Sans:400,700' rel='stylesheet' type='text/css'> -->
+	<!-- <link href='https://fonts.googleapis.com/css?family=Fira+Mono' rel='stylesheet' type='text/css'> -->
+	<style>
+body { margin: 0; padding: 0; background-color: #f8f8ff;font-family:"PT Sans", sans-serif; font-size: 14pt; }
+.jumbo { background-color: #def; padding: 1.6em 0; }
+.wrapper { max-width: 40em; margin: 0 auto; padding: 0 1em; }
+h1 { position: relative; text-shadow: #bdf 1px 1px 1px; margin: 0; font-size: 300%; font-weight: 500; font-family: "Catamaran", sans-serif; }
+#logo { position: relative; top: 0.2em; margin-right: 0.2em; max-height: 1.2em; max-width: 1.2em; width: auto; }
+@media screen and (min-width:30em) {
+	h1 { font-size: 500%; }
+}
+	</style>
+	</head>
+	<body>
+		<div class="jumbo">
+			<div class="wrapper">
+			<h1><img id="logo" src="hyades.svg" />Hyades</h1>
+			</div>
+		</div>
+		<div class="wrapper">
+			<p>Hyades is basically Amazon Web Services for the MIT community. The goal is to provide flexible computational resources on demand, which will enable MIT community members to host websites (a la <a href="https://scripts.mit.edu/">scripts</a>), run virtual machines (a la <a href="https://xvm.mit.edu/">XVM</a>), and more.</p>
+			<p>Hyades is a
+			<a href="https://sipb.mit.edu">SIPB project</a>.
+			Email <a href="hyades@mit.edu">hyades@mit.edu</a> to get involved. You can also stop by SIPB meetings (every Monday 7:30 PM in the SIPB office, W20-557), where you can be added to our mailing lists and be notified about our regularly held Hyades hackathons.</p>
+			<p>Hyades uses technology like Kubernetes and etcd. Hyades source code is on GitHub:</p>
+			<ul>
+				<li><a href="https://github.com/sipb/homeworld"><strong>Homeworld</strong></a>, the cluster management system</li>
+				<li><a href="https://github.com/sipb/spike"><strong>Spike</strong></a>, the packet-level software network load balancer, based on Maglev</a></li>
+			</ul>
+		</div>
+	</body>
+</html>
